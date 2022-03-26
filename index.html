@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- https://github.com/leo-garay/slide-pdf-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.js"></script>
+<script src="https://unpkg.com/pdfobject@2.2.7/pdfobject.min.js"></script>
+<script src="./assets/js/jcarousellite_1.0.1c5.js" type="text/javascript"></script>
+<link rel="stylesheet" href="./assets/css/main.css">
+
+
+<script type="text/javascript">
+        $(function () {
+            let documents = []
+            documents[0] = './my_document_2.pdf';
+            documents[1] = './my_document.pdf';
+
+            let gotos = [];
+
+            for (var key in documents) {
+                gotos.push('.' + key);
+                $(".thumbs").append('<a href="#" onClick="" class="' + key + '">' + key + '</a>');
+
+                $(".documents").append('<li id="pdf-' + key + '"></li>')
+                var $container = $("#pdf-" + key);
+                PDFObject.embed(documents[key], $container);
+            }
+            console.log(gotos);
+
+            $("#slidebox").jCarouselLite({
+                vertical: false,
+                hoverPause: true,
+                btnPrev: ".previous",
+                btnNext: ".next",
+                visible: 1,
+                start: 0,
+                scroll: 1,
+                circular: false,
+                btnGo: gotos,
+                afterEnd: function (a, to, btnGo) {
+                    if (btnGo.length <= to) {
+                        to = 0;
+                    }
+                    $(".thumbActive").removeClass("thumbActive");
+                    $(btnGo[to]).addClass("thumbActive");
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+  <a href="https://github.com/leo-garay/slide-pdf">
+      <h1>Slide PDF</h1>
+  </a>
+<div id="slidebox">
+    <div class="next"></div>
+    <div class="previous"></div>
+    <ul class="documents">
+    </ul>
+</div>
+<div class="thumbs">
+</div>
+</body>
+</html>
